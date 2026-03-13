@@ -51,19 +51,24 @@ repositories {
         patternLayout { artifact "[artifact].[ext]" }
         metadataSources { artifact() }
     }
-    maven { url 'https://jitpack.io' }
+    maven {
+        url "https://cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
+    }
     maven { url 'https://maven.aliyun.com/repository/public/' }
     maven { url 'https://maven.minecraftforge.net' }
     mavenCentral()
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.20.1-47.1.0'
+    minecraft 'net.minecraftforge:forge:1.20.1-47.4.16'
 
-    implementation  fg.deobf("com.github.fliudingsun:FTB-Chunks:v2001.3.6")
-    implementation  fg.deobf("com.github.fliudingsun：FTB-Library:2001.1.12")
-    implementation  fg.deobf("com.github.fliudingsun：FTB-Teams:v2001.3.2")
-    implementation  fg.deobf("com.github.fliudingsun:architectury-api:1.20-SNAPSHOT")
+    implementation fg.deobf("curse.maven:ftb-chunks-forge-314906:6431735")
+    implementation fg.deobf("curse.maven:ftb-library-forge-404465:7296748")
+    implementation fg.deobf("curse.maven:ftb-teams-forge-404468:7499810")
+    implementation fg.deobf("curse.maven:architectury-api-419699:5137938")
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 }
 
