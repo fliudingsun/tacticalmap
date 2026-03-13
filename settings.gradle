@@ -1,10 +1,38 @@
 pluginManagement {
     repositories {
-        // Forge 官方仓库
-        maven { url = 'https://maven.minecraftforge.net/' }
-        // Mixin 插件所在的仓库 (必须包含这个)
-        maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
         gradlePluginPortal()
+        maven {
+            name = 'MinecraftForge'
+            url = 'https://maven.minecraftforge.net/'
+        }
+        maven {
+            name = 'SpongePowered'  // Mixin 插件所需
+            url = 'https://repo.spongepowered.org/repository/maven-public/'
+        }
+    }
+}
+
+dependencyResolutionManagement {
+    // 允许项目脚本（如 build.gradle）添加额外仓库，解决插件无法添加内部仓库的问题
+    repositoriesMode.set(RepositoriesMode.PREFER_PROJECT)
+    repositories {
+        mavenCentral()
+        maven {
+            name = 'MinecraftForge'
+            url = 'https://maven.minecraftforge.net/'
+        }
+        maven {
+            name = 'SpongePowered'
+            url = 'https://repo.spongepowered.org/repository/maven-public/'
+        }
+        maven {
+            name = 'JitPack'        // 添加 JitPack 仓库，用于解析 GitHub 依赖
+            url = 'https://jitpack.io'
+        }
+        maven {
+            name = 'Minecraft'
+            url = 'https://libraries.minecraft.net/'  // Minecraft 原生库
+        }
     }
 }
 
