@@ -1,6 +1,7 @@
 package com.flowingsun.tacticalmap.mixin;
 
 import com.flowingsun.tacticalmap.TacticalMap;
+import com.flowingsun.tacticalmap.network.WaypointAction;
 import com.flowingsun.tacticalmap.network.WaypointSyncPacket;
 import dev.ftb.mods.ftbchunks.api.client.waypoint.Waypoint;
 import dev.ftb.mods.ftbchunks.client.map.WaypointManagerImpl;
@@ -24,7 +25,7 @@ public class WaypointManagerMixin {
         // 只有当路径点创建成功，且当前不是由同步逻辑触发时，才发送给服务器
         if (waypoint != null && !TacticalMap.IS_SYNCING.get()) {
             TacticalMap.LOGGER.info("[TacticalMap] 检测到新路径点创建: {}", name);
-            TacticalMap.CHANNEL.sendToServer(new WaypointSyncPacket(waypoint, WaypointSyncPacket.Action.ADD));
+            TacticalMap.CHANNEL.sendToServer(new WaypointSyncPacket(waypoint, WaypointAction.ADD.getCode()));
         }
     }
 
@@ -37,7 +38,7 @@ public class WaypointManagerMixin {
         // 如果删除成功（返回 true），且不是同步触发
         if (cir.getReturnValue() && !TacticalMap.IS_SYNCING.get()) {
             TacticalMap.LOGGER.info("[TacticalMap] 检测到路径点删除: {}", waypoint.getName());
-            TacticalMap.CHANNEL.sendToServer(new WaypointSyncPacket(waypoint, WaypointSyncPacket.Action.DELETE));
+            TacticalMap.CHANNEL.sendToServer(new WaypointSyncPacket(waypoint, WaypointAction.DELETE.getCode()));
         }
     }
 }

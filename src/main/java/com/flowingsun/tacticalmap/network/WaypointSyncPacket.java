@@ -11,25 +11,24 @@ import net.minecraftforge.network.NetworkEvent;
 import java.util.function.Supplier;
 
 public class WaypointSyncPacket {
-    public enum Action { ADD, DELETE }
-    private final Action action;
+    private final int action;
     private final String name;
     private final BlockPos pos;
 
-    public WaypointSyncPacket(Waypoint wp, Action action) {
+    public WaypointSyncPacket(Waypoint wp, int action) {
         this.action = action;
         this.name = wp.getName();
         this.pos = wp.getPos();
     }
 
     public WaypointSyncPacket(FriendlyByteBuf buf) {
-        this.action = buf.readEnum(Action.class);
+        this.action = buf.readByte();
         this.name = buf.readUtf();
         this.pos = buf.readBlockPos();
     }
 
     public void encode(FriendlyByteBuf buf) {
-        buf.writeEnum(action);
+        buf.writeByte(action);
         buf.writeUtf(name);
         buf.writeBlockPos(pos);
     }
@@ -46,7 +45,7 @@ public class WaypointSyncPacket {
                     // 开启同步标志，防止 Mixin 再次拦截导致无限发包
                     TacticalMap.IS_SYNCING.set(true);
                     try {
-                        if (this.action == Action.ADD) {
+                        if (WaypointAction.fromCode(this.action) == WaypointAction.ADD) {
                             manager.addWaypointAt(this.pos, this.name);
                         } else {
                             for (Waypoint waypoint : manager.getAllWaypoints()) {
@@ -65,5 +64,7 @@ public class WaypointSyncPacket {
         ctx.get().setPacketHandled(true);
     }
 
-    public String getName() { return name; }
+    public String getName() {
+        return name;
+    }
 }
