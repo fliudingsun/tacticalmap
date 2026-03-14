@@ -49,10 +49,12 @@ public class WaypointSyncPacket {
                         if (this.action == Action.ADD) {
                             manager.addWaypointAt(this.pos, this.name);
                         } else {
-                            manager.getAllWaypoints().stream()
-                                    .filter(wp -> wp.getPos().atY(0).equals(this.pos.atY(0)))
-                                    .findFirst()
-                                    .ifPresent(manager::removeWaypoint);
+                            for (Waypoint waypoint : manager.getAllWaypoints()) {
+                                if (waypoint.getPos().atY(0).equals(this.pos.atY(0))) {
+                                    manager.removeWaypoint(waypoint);
+                                    break;
+                                }
+                            }
                         }
                     } finally {
                         TacticalMap.IS_SYNCING.set(false);
