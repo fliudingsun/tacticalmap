@@ -3,9 +3,11 @@ package com.flowingsun.tacticalmap.util;
 public class SyncActionGenerator {
     private static final int SYNC_ACTION_BITS = calculateBits(SyncAction.values().length);
     private static final int SIDE_FLAG_BITS = calculateBits(SideFlag.values().length);
+    public static final int TOTAL_BITS = SYNC_ACTION_BITS + SIDE_FLAG_BITS;
 
     private static final int SYNC_ACTION_MASK = (1 << SYNC_ACTION_BITS) - 1;
     private static final int SIDE_FLAG_MASK = (1 << SIDE_FLAG_BITS) - 1;
+    public static final int TOTAL_MASK = (1 << TOTAL_BITS) - 1;
 
     @Deprecated
     public static byte generate(SyncAction syncAction) {
